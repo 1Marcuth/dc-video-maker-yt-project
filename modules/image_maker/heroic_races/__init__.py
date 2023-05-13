@@ -17,7 +17,7 @@ def make_images(content: dict) -> None:
 
         heroic_dragon = FromDictList(island_data["dragons"]).get_with_key_value("rarity", "H")
 
-        island_dirname = (island_type +
+        island_dirname = (island_type + "_" +
             heroic_dragon["name"]
             .lower()
             .replace(" ", "_"))
