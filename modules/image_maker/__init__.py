@@ -1,15 +1,20 @@
 from pydantic import validate_arguments
-from urllib.request import urlretrieve
+import logging
 
-from .islands.heroic_races.lap import LapImageMaker
+from . import heroic_races
 
-@validate_arguments
-def make_island_images(content: dict):
-    island_data = content["island_data"]
-    laps = island_data["laps"]
+@validate_arguments(config=dict(arbitrary_types_allowed=True))
+def make_island_images(content: dict, logger: logging.Logger) -> None:
+    logger.info("> [island-image-maker] Starting...")
 
-    urlretrieve(island_data["dragons"][0]["image_url"], "image.png")
+    island_type = content["island_type"]
 
-    for i, lap in enumerate(laps):
-        maker = LapImageMaker(i, lap, "image.png")
-        maker.save("imgs/{:02d}.png".format(i+1))
+    logger.info(f"> [island-image-maker] Creating island event images of type '{island_type}'...")
+
+    if island_type == "heroic_races":
+        heroic_races.make_images(content)
+
+    else:
+        raise Exception("Island type not acceptable!")
+
+    logger.info(f"> [island-image-maker] Island event images of type '{island_type} have been successfully created!")

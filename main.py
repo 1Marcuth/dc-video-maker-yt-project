@@ -1,13 +1,16 @@
 from modules import input_, scraper, image_maker
+from utils.logger import get_logger
 
 def main():
     content = {}
 
-    input_.ask_island_type(content)
-    scraper.scrape_island(content)
-    image_maker.make_island_images(content)
+    logger = get_logger()
 
-    print(content)
+    input_.ask_island_type(content, logger)
+    scraper.scrape_island(content, logger)
+    image_maker.make_island_images(content, logger)
+
+    #print(content)
 
 if __name__ == "__main__":
     main()
